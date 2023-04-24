@@ -389,9 +389,9 @@ var Synclink = (() => {
           case "not-equal":
             return;
           case "timed-out":
-            if (interrupt_buffer[0] !== 0) {
+            // if (interrupt_buffer[0] !== 0) {
               handleInterrupt();
-            }
+            // }
             break;
           default:
             throw new Error("Unreachable");
