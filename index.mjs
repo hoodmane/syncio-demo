@@ -11,15 +11,6 @@ async function slow_inc(n) {
 
 async function init() {
   const worker = Synclink.wrap(new Worker("worker.js"));
-  console.log("do_stuff_async");
-  const res1 = await worker.do_stuff_async(Synclink.proxy(slow_inc));
-  console.log("got:", res1);
-
-  console.log("do_stuff_sync");
-  const res2 = await worker.do_stuff_sync(Synclink.proxy(slow_inc));
-  console.log("got:", res2);
-
-  globalThis.worker = worker;
-  // do something with text
+  globalThis.pyodide = await worker.main(Synclink.proxy(slow_inc));
 }
 init();

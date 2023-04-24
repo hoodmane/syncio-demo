@@ -1,20 +1,21 @@
 importScripts("./synclink.js");
+importScripts("https://cdn.jsdelivr.net/pyodide/v0.23.1/full/pyodide.js")
 
-async function do_stuff_async(slow_inc) {
-    console.log("slow_inc(1)");
-    let result = await slow_inc(1);
-    console.log("slow_inc(1) gave:", result);
-    return result + 1;
-}
-
-function do_stuff_sync(slow_inc) {
+function do_stuff_sync() {
     console.log("slow_inc(1)");
     let result = slow_inc(1).syncify();
     console.log("slow_inc(1) gave:", result);
     return result + 1;
 }
 
+async function main(slow_inc) {
+    globalThis.slow_inc = slow_inc;
+    const pyodide = await loadPyodide();
+    return Synclink.proxy(pyodide)
+}
+
+
+
 Synclink.expose({
-    do_stuff_async,
-    do_stuff_sync
+    main,
 });
